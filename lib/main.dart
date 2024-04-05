@@ -1,9 +1,10 @@
 // import 'dart:io';
-import 'package:bug_basher/views/screens/Home.dart';
 import 'package:bug_basher/views/screens/intro_screen.dart';
 import 'package:bug_basher/views/screens/profile.dart';
-import 'package:bug_basher/widgets/introscreenpage.dart';
 import 'package:bug_basher/widgets/nav.dart';
+import 'dart:io';
+import 'package:bug_basher/views/screens/Login.dart';
+import 'package:bug_basher/views/screens/home.dart';
 import 'package:flutter/material.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bug_basher/views/screens/splash_screen.dart';
@@ -31,7 +32,9 @@ class MyApp extends StatelessWidget {
         'splashscreen': (context) => SplashScreen(),
         'intro_screen': (context) => Intro_Screen(),
         'nav': (context) => Nav(),
-        'home': (context) => Home(),
+        'home': (context) => home(),
+        'login': (context) => Login(),
+        // 'login': (context) => Login(),
         // // 'overallattendance':(context)=>OverAllAttd(),
         // 'timetable':(context) => ExamTimetableScreen(),
         'profile': (context) => Profile(),
