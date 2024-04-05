@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:bug_basher/views/screens/Login.dart';
+import 'package:bug_basher/views/screens/chatbot.dart';
+import 'package:bug_basher/views/screens/features.dart';
 import 'package:bug_basher/views/screens/home.dart';
+import 'package:bug_basher/views/screens/otp.dart';
 import 'package:bug_basher/views/screens/payment.dart';
 import 'package:bug_basher/views/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -24,13 +27,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: 'payment',
+      initialRoute: 'features',
       // initialRoute: 'subject_wise_attendance',
       routes: {
         'splashscreen': (context) => SplashScreen(),
         'login': (context) => Login(),
         'home': (context) => const home(),
          'payment': (context) => const Payment(),
+         'chatbot': (context) => cyberMitr(),
+          'otp': (context) => otpVerification(),
+           'features': (context) => Features(),
 
         // 'login': (context) => Login(),
         // // 'overallattendance':(context)=>OverAllAttd(),
@@ -73,21 +79,8 @@ class PreferencesManager {
   set token(String value) => _prefs.setString('token', value);
   String get ack => _prefs.getString('ack') ?? '';
   set ack(String value) => _prefs.setString('ack', value);
-  String get studentPhoto => _prefs.getString('studentPhoto') ?? '';
-  set studentPhoto(String value) => _prefs.setString('studentPhoto', value);
-  String get studentNumber => _prefs.getString('studentNumber') ?? '';
-  set studentNumber(String value) => _prefs.setString('studentNumber', value);
-  String get universityRollNumber =>
-      _prefs.getString('universityRollNumber') ?? '';
-  set universityRollNumber(String value) =>
-      _prefs.setString('universityRollNumber', value);
-  String get dob => _prefs.getString('dob') ?? '';
-  set dob(String value) => _prefs.setString('dob', value);
-  int get totalclasses => _prefs.getInt('totalclasses') ?? 0;
-  set totalclasses(int value) => _prefs.setInt('totalclasses', value);
 
-  int get presentclasses => _prefs.getInt('presentclasses') ?? 0;
-  set presentclasses(int value) => _prefs.setInt('presentclasses', value);
+
 
   // add more methods as needed
 }

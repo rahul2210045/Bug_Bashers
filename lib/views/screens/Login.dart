@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 // import 'package:edumarshals/Screens/OverAllAttendance.dart';
@@ -10,10 +11,10 @@ import 'dart:io';
 // import 'package:edumarshals/Screens/User_Info/Subject_Data.dart';
 // import 'package:edumarshals/main.dart';
 // import 'package:edumarshals/screens/time_table.dart';
+import 'package:bug_basher/main.dart';
 import 'package:bug_basher/utils/constants/utilities.dart';
 import 'package:bug_basher/views/screens/home.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 // import 'package:edumarshals/Utils/Utilities/utilities2.dart';
 import 'package:http/http.dart' as http;
 // import 'package:intl/intl.dart';
@@ -37,158 +38,126 @@ class _LoginState extends State<Login> {
   bool _isLoading = false;
   // DateTime? selectedDate;
 
-  // Future<void> _selectDate(BuildContext context) async {
-  //   final DateTime? picked = await showDatePicker(
-  //     context: context,
-  //     initialDate: selectedDate ?? DateTime.now(),
-  //     firstDate: DateTime(1980),
-  //     lastDate: DateTime(2025),
-  //     // barrierColor: Color.fromARGB(60, 0, 74, 184),
-  //     builder: (BuildContext context, Widget? child) {
-  //       return Theme(
-  //         data: ThemeData.light().copyWith(
-  //           colorScheme: const ColorScheme.light(
-  //             primary: Color(0xFF004BB8), // Background color
-  //             onPrimary: Colors.white, // Selected date text color
-  //           ),
-  //         ),
-  //         child: child!,
-  //       );
-  //     },
-  //   );
+ 
 
-  //   if (picked != null && picked != selectedDate) {
-  //     setState(() {
-  //       selectedDate = DateTime(picked.year, picked.month, picked.day);
-  //     });
-  //   }
-  // }
+  Future<void> _saveItem() async {
+    setState(() {
+      _isLoading = true;
+    });
+final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
 
-  // Future<void> _saveItem() async {
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //   String formattedDate = selectedDate != null
-  //       ? DateFormat('dd-MM-yyyy').format(selectedDate!)
-  //       : '';
-  //   PreferencesManager().dob = formattedDate;
-  //   final url = Uri.https('akgec-edu.onrender.com', '/v1/student/login');
+    final Map<String, String> requestBody = {
+      'password': _passController.text,
+      'userName': _usernameController.text,
+    };
 
-  //   final Map<String, String> requestBody = {
-  //     'password': _passController.text,
-  //     'username': _usernameController.text,
-  //     'dob': formattedDate,
-  //   };
+    try {
+      final response = await http.post(
+        url,
+        headers: <String, String>{'Content-Type': 'application/json'},
+        body: jsonEncode(requestBody),
+      );
+      PreferencesManager().email=_usernameController as String;
+      
 
-  //   try {
-  //     final response = await http.post(
-  //       url,
-  //       headers: <String, String>{'Content-Type': 'application/json'},
-  //       body: jsonEncode(requestBody),
-  //     );
-  //     // PreferencesManager().email=userna;
+      //
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        dynamic setCookieHeader = response.headers['set-cookie'];
 
-  //     //
-  //     print(response.statusCode);
-  //     if (response.statusCode == 200) {
-  //       dynamic setCookieHeader = response.headers['set-cookie'];
+        List<String>? cookies;
+        // print(response.Cookies);
+        print('Response headers: ${response.headers}');
+        print('Cookies from response: ${response.headers['set-cookie']}');
 
-  //       List<String>? cookies;
-  //       // print(response.Cookies);
-  //       print('Response headers: ${response.headers}');
-  //       print('Cookies from response: ${response.headers['set-cookie']}');
+        if (setCookieHeader is String) {
+          cookies = [setCookieHeader];
+        } else if (setCookieHeader is List<String>) {
+          cookies = setCookieHeader;
+        } else {
+          cookies = [];
+        }
 
-  //       if (setCookieHeader is String) {
-  //         cookies = [setCookieHeader];
-  //       } else if (setCookieHeader is List<String>) {
-  //         cookies = setCookieHeader;
-  //       } else {
-  //         cookies = [];
-  //       }
+        print('Response Headers: $setCookieHeader');
 
-  //       print('Response Headers: $setCookieHeader');
+        String accessToken = '';
+        // String
 
-  //       String accessToken = '';
-  //       // String
+        if (cookies.isNotEmpty) {
+          accessToken = cookies
+              .map((cookie) => cookie.split(';').first)
+              .firstWhere((value) => value.startsWith('accessToken='),
+                  orElse: () => '');
+        }
+        String actualAccessToken = accessToken.substring("accesstoken=".length);
 
-  //       if (cookies.isNotEmpty) {
-  //         accessToken = cookies
-  //             .map((cookie) => cookie.split(';').first)
-  //             .firstWhere((value) => value.startsWith('accessToken='),
-  //                 orElse: () => '');
-  //       }
-  //       String actualAccessToken = accessToken.substring("accesstoken=".length);
+        print('Access Token from Cookie: $actualAccessToken');
+        PreferencesManager().token = actualAccessToken;
 
-  //       print('Access Token from Cookie: $actualAccessToken');
-  //       PreferencesManager().token = actualAccessToken;
+        if (actualAccessToken.isNotEmpty) {
+          // prefs.setString('token', actualAccessToken);
+          print('Token stored in prefs: $actualAccessToken');
+        } else {
+          // Handle the case where the token is empty
+          print('Token is empty');
+        }
 
-  //       if (actualAccessToken.isNotEmpty) {
-  //         // prefs.setString('token', actualAccessToken);
-  //         print('Token stored in prefs: $actualAccessToken');
-  //       } else {
-  //         // Handle the case where the token is empty
-  //         print('Token is empty');
-  //       }
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        final message = responseData['message'];
+        // final name = responseData['name'];
 
-  //       final Map<String, dynamic> responseData = json.decode(response.body);
-  //       final message = responseData['message'];
-  //       final name = responseData['name'];
+        print('Message from API: $message');
+        // print('Message from API: $name');
 
-  //       print('Message from API: $message');
-  //       print('Message from API: $name');
-  //       print('dob :$formattedDate');
+        // PreferencesManager().name = name;
+        // Update UI to show success message or navigate to another screen
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            duration: const Duration(seconds: 3),
+          ),
+        );
 
-  //       PreferencesManager().name = name;
-  //       // Update UI to show success message or navigate to another screen
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(
-  //           content: Text(message),
-  //           duration: const Duration(seconds: 3),
-  //         ),
-  //       );
-
-  //       setState(() {
-  //         _isLoading = false;
-  //       });
-  //       // for navigaation to next page
-  //       Navigator.pushReplacement(context,
-  //           MaterialPageRoute(builder: (context) =>Homepage() ));
-  //       // Navigator.push(
-  //       //     context,
-  //       //     MaterialPageRoute(
-  //       //       builder: (context) =>
-  //       //           otpVerification(email: _emailController.text),
-  //       //     ));
-  //     } else {
-  //       final Map<String, dynamic> responseData = json.decode(response.body);
-  //       final message = responseData['message'];
-  //       print('Failed: $message');
-  //       print('dob :$formattedDate');
-  //       // Update UI to show success message or navigate to another screen
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(
-  //           content: Text(message),
-  //           duration: const Duration(seconds: 3),
-  //         ),
-  //       );
-  //       setState(() {
-  //         _isLoading = false;
-  //       });
-  //       // print('Failed: ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     print('dob :$formattedDate');
-  //     print('Error: $e');
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   }
-  //   if (isChecked) {
-  //     final prefs = await SharedPreferences.getInstance();
-  //     prefs.setString('username', _usernameController.text);
-  //     prefs.setString('password', _passController.text);
-  //   }
-  // }
+        setState(() {
+          _isLoading = false;
+        });
+        // for navigaation to next page
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) =>home() ));
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (context) =>
+        //           otpVerification(email: _emailController.text),
+        //     ));
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        final message = responseData['message'];
+        print('Failed: $message');
+        // Update UI to show success message or navigate to another screen
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+        setState(() {
+          _isLoading = false;
+        });
+        // print('Failed: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+      setState(() {
+        _isLoading = false;
+      });
+    }
+    if (isChecked) {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString('username', _usernameController.text);
+      prefs.setString('password', _passController.text);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -607,9 +576,9 @@ class _LoginState extends State<Login> {
                   SizedBox(height: screenHeight * 0.3),
                   ElevatedButton(
                     onPressed: () async {
-                      // await _saveItem();
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => home()));
+                      await _saveItem();
+                      // Navigator.push(context,
+                      //     MaterialPageRoute(builder: (context) => home()));
           
                       // Add your onPressed logic here
                     },
