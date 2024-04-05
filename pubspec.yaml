@@ -52,6 +52,11 @@ dependencies:
   # qr_flutter: ^4.1.0
   # flutter_barcode_scanner: ^2.0.0
   # flutter_secure_storage: ^9.0.0
+  flutter_gemini: ^2.0.3
+  google_gemini: ^0.1.2
+  image_picker: ^1.0.7
+  pin_code_fields: ^8.0.1
+  pinput: ^4.0.0
 
 dev_dependencies:
   flutter_test:

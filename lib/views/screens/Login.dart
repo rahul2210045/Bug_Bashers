@@ -1,10 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:bug_basher/utils/constants/utilities.dart';
 import 'package:bug_basher/views/screens/home.dart';
 import 'package:bug_basher/widgets/nav.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 // import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,47 +27,15 @@ class _LoginState extends State<Login> {
   bool _isLoading = false;
   DateTime? selectedDate;
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate ?? DateTime.now(),
-      firstDate: DateTime(1980),
-      lastDate: DateTime(2025),
-      // barrierColor: Color.fromARGB(60, 0, 74, 184),
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Color(0xFF004BB8), // Background color
-              onPrimary: Colors.white, // Selected date text color
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = DateTime(picked.year, picked.month, picked.day);
-      });
-    }
-  }
-
   Future<void> _saveItem() async {
     setState(() {
       _isLoading = true;
     });
-    String formattedDate = selectedDate != null
-        ? DateFormat('dd-MM-yyyy').format(selectedDate!)
-        : '';
-    PreferencesManager().dob = formattedDate;
-    final url = Uri.https('akgec-edu.onrender.com', '/v1/student/login');
+    final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
 
     final Map<String, String> requestBody = {
       'password': _passController.text,
-      'username': _usernameController.text,
-      'dob': formattedDate,
+      'userName': _usernameController.text,
     };
 
     try {
@@ -76,7 +44,7 @@ class _LoginState extends State<Login> {
         headers: <String, String>{'Content-Type': 'application/json'},
         body: jsonEncode(requestBody),
       );
-      // PreferencesManager().email=userna;
+      PreferencesManager().email = _usernameController as String;
 
       //
       print(response.statusCode);
@@ -122,13 +90,12 @@ class _LoginState extends State<Login> {
 
         final Map<String, dynamic> responseData = json.decode(response.body);
         final message = responseData['message'];
-        final name = responseData['name'];
+        // final name = responseData['name'];
 
         print('Message from API: $message');
-        print('Message from API: $name');
-        print('dob :$formattedDate');
+        // print('Message from API: $name');
 
-        PreferencesManager().name = name;
+        // PreferencesManager().name = name;
         // Update UI to show success message or navigate to another screen
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -142,7 +109,7 @@ class _LoginState extends State<Login> {
         });
         // for navigaation to next page
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Homepage()));
+            context, MaterialPageRoute(builder: (context) => home()));
         // Navigator.push(
         //     context,
         //     MaterialPageRoute(
@@ -153,7 +120,6 @@ class _LoginState extends State<Login> {
         final Map<String, dynamic> responseData = json.decode(response.body);
         final message = responseData['message'];
         print('Failed: $message');
-        print('dob :$formattedDate');
         // Update UI to show success message or navigate to another screen
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -167,7 +133,6 @@ class _LoginState extends State<Login> {
         // print('Failed: ${response.statusCode}');
       }
     } catch (e) {
-      print('dob :$formattedDate');
       print('Error: $e');
       setState(() {
         _isLoading = false;
@@ -600,9 +565,9 @@ class _LoginState extends State<Login> {
                   SizedBox(height: screenHeight * 0.3),
                   ElevatedButton(
                     onPressed: () async {
-                      // await _saveItem();
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Nav()));
+                      await _saveItem();
+                      // Navigator.push(context,
+                      //     MaterialPageRoute(builder: (context) => home()));
 
                       // Add your onPressed logic here
                     },
