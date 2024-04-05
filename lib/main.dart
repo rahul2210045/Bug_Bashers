@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:bug_basher/views/screens/Login.dart';
+import 'package:bug_basher/views/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bug_basher/views/screens/splash_screen.dart';
@@ -20,11 +22,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: 'splashscreen',
+      initialRoute: 'home',
       // initialRoute: 'subject_wise_attendance',
       routes: {
         'splashscreen': (context) => SplashScreen(),
-        // 'homepage': (context) => const Homepage(),
+        'login': (context) => Login(),
+        'home': (context) => const home(),
         // 'login': (context) => Login(),
         // // 'overallattendance':(context)=>OverAllAttd(),
         // 'timetable':(context) => ExamTimetableScreen(),
