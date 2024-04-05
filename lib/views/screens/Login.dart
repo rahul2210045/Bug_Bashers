@@ -1,20 +1,10 @@
 import 'dart:io';
 
-// import 'package:edumarshals/Screens/OverAllAttendance.dart';
-// import 'package:edumarshals/Screens/Attendance/OverAllAttendance.dart';
-// import 'package:edumarshals/Screens/Attendance/OverAllAttendance.dart';
-// import 'package:edumarshals/Screens/HomePage/Homepage.dart';
-// import 'package:edumarshals/Screens/User_Info/Personal_Info/Contact_info_Data.dart';
-// import 'package:edumarshals/Screens/User_Info/Personal_Info/Parent_Info_Data.dart';
-// import 'package:edumarshals/Screens/User_Info/Personal_Info/Personal_Info_Data.dart';
-// import 'package:edumarshals/Screens/User_Info/Subject_Data.dart';
-// import 'package:edumarshals/main.dart';
-// import 'package:edumarshals/screens/time_table.dart';
 import 'package:bug_basher/utils/constants/utilities.dart';
 import 'package:bug_basher/views/screens/home.dart';
+import 'package:bug_basher/widgets/nav.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
-// import 'package:edumarshals/Utils/Utilities/utilities2.dart';
 import 'package:http/http.dart' as http;
 // import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,160 +25,160 @@ class _LoginState extends State<Login> {
   // final TextEditingController _dobController = TextEditingController();
   bool isChecked = false;
   bool _isLoading = false;
-  // DateTime? selectedDate;
+  DateTime? selectedDate;
 
-  // Future<void> _selectDate(BuildContext context) async {
-  //   final DateTime? picked = await showDatePicker(
-  //     context: context,
-  //     initialDate: selectedDate ?? DateTime.now(),
-  //     firstDate: DateTime(1980),
-  //     lastDate: DateTime(2025),
-  //     // barrierColor: Color.fromARGB(60, 0, 74, 184),
-  //     builder: (BuildContext context, Widget? child) {
-  //       return Theme(
-  //         data: ThemeData.light().copyWith(
-  //           colorScheme: const ColorScheme.light(
-  //             primary: Color(0xFF004BB8), // Background color
-  //             onPrimary: Colors.white, // Selected date text color
-  //           ),
-  //         ),
-  //         child: child!,
-  //       );
-  //     },
-  //   );
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate ?? DateTime.now(),
+      firstDate: DateTime(1980),
+      lastDate: DateTime(2025),
+      // barrierColor: Color.fromARGB(60, 0, 74, 184),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Color(0xFF004BB8), // Background color
+              onPrimary: Colors.white, // Selected date text color
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
 
-  //   if (picked != null && picked != selectedDate) {
-  //     setState(() {
-  //       selectedDate = DateTime(picked.year, picked.month, picked.day);
-  //     });
-  //   }
-  // }
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = DateTime(picked.year, picked.month, picked.day);
+      });
+    }
+  }
 
-  // Future<void> _saveItem() async {
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //   String formattedDate = selectedDate != null
-  //       ? DateFormat('dd-MM-yyyy').format(selectedDate!)
-  //       : '';
-  //   PreferencesManager().dob = formattedDate;
-  //   final url = Uri.https('akgec-edu.onrender.com', '/v1/student/login');
+  Future<void> _saveItem() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String formattedDate = selectedDate != null
+        ? DateFormat('dd-MM-yyyy').format(selectedDate!)
+        : '';
+    PreferencesManager().dob = formattedDate;
+    final url = Uri.https('akgec-edu.onrender.com', '/v1/student/login');
 
-  //   final Map<String, String> requestBody = {
-  //     'password': _passController.text,
-  //     'username': _usernameController.text,
-  //     'dob': formattedDate,
-  //   };
+    final Map<String, String> requestBody = {
+      'password': _passController.text,
+      'username': _usernameController.text,
+      'dob': formattedDate,
+    };
 
-  //   try {
-  //     final response = await http.post(
-  //       url,
-  //       headers: <String, String>{'Content-Type': 'application/json'},
-  //       body: jsonEncode(requestBody),
-  //     );
-  //     // PreferencesManager().email=userna;
+    try {
+      final response = await http.post(
+        url,
+        headers: <String, String>{'Content-Type': 'application/json'},
+        body: jsonEncode(requestBody),
+      );
+      // PreferencesManager().email=userna;
 
-  //     //
-  //     print(response.statusCode);
-  //     if (response.statusCode == 200) {
-  //       dynamic setCookieHeader = response.headers['set-cookie'];
+      //
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        dynamic setCookieHeader = response.headers['set-cookie'];
 
-  //       List<String>? cookies;
-  //       // print(response.Cookies);
-  //       print('Response headers: ${response.headers}');
-  //       print('Cookies from response: ${response.headers['set-cookie']}');
+        List<String>? cookies;
+        // print(response.Cookies);
+        print('Response headers: ${response.headers}');
+        print('Cookies from response: ${response.headers['set-cookie']}');
 
-  //       if (setCookieHeader is String) {
-  //         cookies = [setCookieHeader];
-  //       } else if (setCookieHeader is List<String>) {
-  //         cookies = setCookieHeader;
-  //       } else {
-  //         cookies = [];
-  //       }
+        if (setCookieHeader is String) {
+          cookies = [setCookieHeader];
+        } else if (setCookieHeader is List<String>) {
+          cookies = setCookieHeader;
+        } else {
+          cookies = [];
+        }
 
-  //       print('Response Headers: $setCookieHeader');
+        print('Response Headers: $setCookieHeader');
 
-  //       String accessToken = '';
-  //       // String
+        String accessToken = '';
+        // String
 
-  //       if (cookies.isNotEmpty) {
-  //         accessToken = cookies
-  //             .map((cookie) => cookie.split(';').first)
-  //             .firstWhere((value) => value.startsWith('accessToken='),
-  //                 orElse: () => '');
-  //       }
-  //       String actualAccessToken = accessToken.substring("accesstoken=".length);
+        if (cookies.isNotEmpty) {
+          accessToken = cookies
+              .map((cookie) => cookie.split(';').first)
+              .firstWhere((value) => value.startsWith('accessToken='),
+                  orElse: () => '');
+        }
+        String actualAccessToken = accessToken.substring("accesstoken=".length);
 
-  //       print('Access Token from Cookie: $actualAccessToken');
-  //       PreferencesManager().token = actualAccessToken;
+        print('Access Token from Cookie: $actualAccessToken');
+        PreferencesManager().token = actualAccessToken;
 
-  //       if (actualAccessToken.isNotEmpty) {
-  //         // prefs.setString('token', actualAccessToken);
-  //         print('Token stored in prefs: $actualAccessToken');
-  //       } else {
-  //         // Handle the case where the token is empty
-  //         print('Token is empty');
-  //       }
+        if (actualAccessToken.isNotEmpty) {
+          // prefs.setString('token', actualAccessToken);
+          print('Token stored in prefs: $actualAccessToken');
+        } else {
+          // Handle the case where the token is empty
+          print('Token is empty');
+        }
 
-  //       final Map<String, dynamic> responseData = json.decode(response.body);
-  //       final message = responseData['message'];
-  //       final name = responseData['name'];
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        final message = responseData['message'];
+        final name = responseData['name'];
 
-  //       print('Message from API: $message');
-  //       print('Message from API: $name');
-  //       print('dob :$formattedDate');
+        print('Message from API: $message');
+        print('Message from API: $name');
+        print('dob :$formattedDate');
 
-  //       PreferencesManager().name = name;
-  //       // Update UI to show success message or navigate to another screen
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(
-  //           content: Text(message),
-  //           duration: const Duration(seconds: 3),
-  //         ),
-  //       );
+        PreferencesManager().name = name;
+        // Update UI to show success message or navigate to another screen
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            duration: const Duration(seconds: 3),
+          ),
+        );
 
-  //       setState(() {
-  //         _isLoading = false;
-  //       });
-  //       // for navigaation to next page
-  //       Navigator.pushReplacement(context,
-  //           MaterialPageRoute(builder: (context) =>Homepage() ));
-  //       // Navigator.push(
-  //       //     context,
-  //       //     MaterialPageRoute(
-  //       //       builder: (context) =>
-  //       //           otpVerification(email: _emailController.text),
-  //       //     ));
-  //     } else {
-  //       final Map<String, dynamic> responseData = json.decode(response.body);
-  //       final message = responseData['message'];
-  //       print('Failed: $message');
-  //       print('dob :$formattedDate');
-  //       // Update UI to show success message or navigate to another screen
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(
-  //           content: Text(message),
-  //           duration: const Duration(seconds: 3),
-  //         ),
-  //       );
-  //       setState(() {
-  //         _isLoading = false;
-  //       });
-  //       // print('Failed: ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     print('dob :$formattedDate');
-  //     print('Error: $e');
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   }
-  //   if (isChecked) {
-  //     final prefs = await SharedPreferences.getInstance();
-  //     prefs.setString('username', _usernameController.text);
-  //     prefs.setString('password', _passController.text);
-  //   }
-  // }
+        setState(() {
+          _isLoading = false;
+        });
+        // for navigaation to next page
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => Homepage()));
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (context) =>
+        //           otpVerification(email: _emailController.text),
+        //     ));
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        final message = responseData['message'];
+        print('Failed: $message');
+        print('dob :$formattedDate');
+        // Update UI to show success message or navigate to another screen
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+        setState(() {
+          _isLoading = false;
+        });
+        // print('Failed: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('dob :$formattedDate');
+      print('Error: $e');
+      setState(() {
+        _isLoading = false;
+      });
+    }
+    if (isChecked) {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString('username', _usernameController.text);
+      prefs.setString('password', _passController.text);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -333,249 +323,252 @@ class _LoginState extends State<Login> {
                             SizedBox(
                               height: screenHeight * 0.02,
                             ),
-                          Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      // SizedBox(width: 900),
-      Padding(
-        padding: const EdgeInsets.only(left: 50.0),
-        child: CustomText(
-          text: "Password",
-          color: const Color(0xFF3386FF),
-          fontSize: 12,
-          fontStyle: null,
-          fontfamily: 'Poppins',
-          // fontWeight: FontWeight.w400,
-        ),
-      ),
-      Container(
-          decoration: const BoxDecoration(
-              // color: Color(0xFFA0A0A0),
-              border: Border(
-                  // bottom: BorderSide(width: 1, color: Color(0xFFA0A0A0)),
-                  )
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // SizedBox(width: 900),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 50.0),
+                                  child: CustomText(
+                                    text: "Password",
+                                    color: const Color(0xFF3386FF),
+                                    fontSize: 12,
+                                    fontStyle: null,
+                                    fontfamily: 'Poppins',
+                                    // fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                Container(
+                                    decoration: const BoxDecoration(
+                                        // color: Color(0xFFA0A0A0),
+                                        border: Border(
+                                            // bottom: BorderSide(width: 1, color: Color(0xFFA0A0A0)),
+                                            )
 
-              // boxShadow: [
-              //   BoxShadow(
-              //       // color: Color.fromARGB(62, 254, 254, 254).withOpacity(0.2),
-              //       // spreadRadius: 2,
-              //       // blurRadius: 5,
-              //       // offset: const Offset(0, 3),
-              //       ),
-              // ],
-              ),
-          // margin: const EdgeInsets.all(8.0),
-          child: SizedBox(
-            // width: screenWidth * 1,
-            child: Row(children: [
-              Image.asset(
-                "assets/images/shield-security.png",
-                scale: 1,
-                height: screenHeight * 0.032,
-              ),
-              SizedBox(width: screenWidth * 0.01),
-              SizedBox(
-                width: screenWidth * 0.6,
-                child: TextFormField(
-                  controller: _passController,
-                  obscureText: true,
-                  style: const TextStyle(color: Colors.black),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a valid value';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    fillColor: const Color.fromARGB(0, 17, 90, 216),
-                    filled: true,
-                    hintText: "Password",
-                    hintStyle: const TextStyle(
-                        color: Color(0xFF565656),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400),
-                    // border:
-                    // focusedBorder: OutlineInputBorder(
-                    //   borderRadius: BorderRadius.circular(10),
-                    //   borderSide: BorderSide(color: Color(0xFFA0A0A0)),
-                    // ),
-                    // enabledBorder: OutlineInputBorder(
-                    //   borderRadius: BorderRadius.circular(2),
-                    //   borderSide: BorderSide.none,
-                    // ),
-                    // suffixStyle: const TextStyle(color: Colors.indigo),
-                  ),
-                ),
-              ),
-            ]),
-          ))
-    ],
-  ),
+                                        // boxShadow: [
+                                        //   BoxShadow(
+                                        //       // color: Color.fromARGB(62, 254, 254, 254).withOpacity(0.2),
+                                        //       // spreadRadius: 2,
+                                        //       // blurRadius: 5,
+                                        //       // offset: const Offset(0, 3),
+                                        //       ),
+                                        // ],
+                                        ),
+                                    // margin: const EdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                      // width: screenWidth * 1,
+                                      child: Row(children: [
+                                        Image.asset(
+                                          "assets/images/shield-security.png",
+                                          scale: 1,
+                                          height: screenHeight * 0.032,
+                                        ),
+                                        SizedBox(width: screenWidth * 0.01),
+                                        SizedBox(
+                                          width: screenWidth * 0.6,
+                                          child: TextFormField(
+                                            controller: _passController,
+                                            obscureText: true,
+                                            style: const TextStyle(
+                                                color: Colors.black),
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Please enter a valid value';
+                                              }
+                                              return null;
+                                            },
+                                            decoration: InputDecoration(
+                                              fillColor: const Color.fromARGB(
+                                                  0, 17, 90, 216),
+                                              filled: true,
+                                              hintText: "Password",
+                                              hintStyle: const TextStyle(
+                                                  color: Color(0xFF565656),
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400),
+                                              // border:
+                                              // focusedBorder: OutlineInputBorder(
+                                              //   borderRadius: BorderRadius.circular(10),
+                                              //   borderSide: BorderSide(color: Color(0xFFA0A0A0)),
+                                              // ),
+                                              // enabledBorder: OutlineInputBorder(
+                                              //   borderRadius: BorderRadius.circular(2),
+                                              //   borderSide: BorderSide.none,
+                                              // ),
+                                              // suffixStyle: const TextStyle(color: Colors.indigo),
+                                            ),
+                                          ),
+                                        ),
+                                      ]),
+                                    ))
+                              ],
+                            ),
                             SizedBox(
                               height: screenHeight * 0.02,
                             ),
-                            // Column(
-                            //   crossAxisAlignment: CrossAxisAlignment.start,
-                            //   children: [
-                            //     const Padding(
-                            //       padding: EdgeInsets.only(left: 50.0),
-                            //       child: CustomText(
-                            //         text: "Date of Birth",
-                            //         color: Color(0xFF3386FF),
-                            //         fontSize: 12,
-                            //         fontStyle: null,
-                            //         fontfamily: 'Poppins',
-                            //         // fontWeight: FontWeight.w400,
-                            //       ),
-                            //     ),
-                            //     // Spacer()/
-                            //     Padding(padding: EdgeInsets.all(4)),
-                            //     Row(
-                            //       mainAxisAlignment:
-                            //           MainAxisAlignment.spaceBetween,
-                            //       children: [
-                            //         GestureDetector(
-                            //           onTap: () => _selectDate(context),
-                            //           child: Container(
-                            //             // height: screenHeight * .05,
-                            //             width: screenWidth * 0.7,
-                            //             child: Padding(
-                            //               padding: const EdgeInsets.only(
-                            //                   left: 0, right: 0),
-                            //               child: Center(
-                            //                   child: selectedDate == null
-                            //                       ? Row(
-                            //                           children: [
-                            //                             Padding(
-                            //                               padding:
-                            //                                   const EdgeInsets
-                            //                                       .only(
-                            //                                       right: 10),
-                            //                               // child: Image.asset(
-                            //                               //   'assets/calendar.png',
-                            //                               //   scale: 4.5,
-                            //                               //   // height: screenHeight * 0.032,
-                            //                               // ),
-                            //                             ),
-                            //                             // Container(
-                            //                             //   width:
-                            //                             //       screenWidth * 0.58,
-                            //                             //   decoration:
-                            //                             //       const BoxDecoration(
-                            //                             //     // borderRadius: BorderRadius.circular(10),
-                            //                             //     // border: Border.(
-                            //                             //     //   color: Color(0xff00194A),
-                            //                             //     // ),
-                            //                             //     border: Border(
-                            //                             //       bottom: BorderSide(
-                            //                             //           width: 1,
-                            //                             //           color: Color
-                            //                             //               .fromARGB(
-                            //                             //                   224,
-                            //                             //                   16,
-                            //                             //                   15,
-                            //                             //                   15)),
-                            //                             //     ),
-                            //                             //   ),
-                            //                             //   child: Text(
-                            //                             //     // '  Enter D.O.B',
-                            //                             //     selectedDate != null
-                            //                             //         ? DateFormat(
-                            //                             //                 'dd-MM-yyyy')
-                            //                             //             .format(
-                            //                             //                 selectedDate!)
-                            //                             //         : '  Enter D.O.B',
-                            //                             //     style:
-                            //                             //         const TextStyle(
-                            //                             //       fontSize: 12,
-                            //                             //       fontWeight:
-                            //                             //           FontWeight.w400,
-                            //                             //       color: Color(
-                            //                             //           0xFF565656),
-                            //                             //     ),
-                            //                             //   ),
-                            //                             // ),
-                            //                           ],
-                            //                         )
-                            //                       : Row(
-                            //                           children: [
-                            //                             Padding(
-                            //                               padding:
-                            //                                   const EdgeInsets
-                            //                                       .only(
-                            //                                       right: 15),
-                            //                               // child: Image.asset(
-                            //                               //   'assets/calendar.png',
-                            //                               //   scale: 4.5,
-                            //                               //   // height: screenHeight * 0.032,
-                            //                               // ),
-                            //                             ),
-                            //                             Container(
-                            //                               width:
-                            //                                   screenWidth * 0.58,
-                            //                               decoration:
-                            //                                   const BoxDecoration(
-                            //                                 // borderRadius: BorderRadius.circular(10),
-                            //                                 // border: Border.(
-                            //                                 //   color: Color(0xff00194A),
-                            //                                 // ),
-                            //                                 border: Border(
-                            //                                   bottom: BorderSide(
-                            //                                       width: 1,
-                            //                                       color: Color
-                            //                                           .fromARGB(
-                            //                                               224,
-                            //                                               16,
-                            //                                               15,
-                            //                                               15)),
-                            //                                 ),
-                            //                               ),
-                            //                               child: Text(
-                            //                                 '${selectedDate!.toLocal()}'
-                            //                                     .split(' ')[0],
-                            //                                 style: const TextStyle(
-                            //                                     fontSize: 14,
-                            //                                     fontWeight:
-                            //                                         FontWeight
-                            //                                             .w500),
-                            //                               ),
-                            //                             ),
-                            //                           ],
-                            //                         )),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   ],
-                            // ),
-                            // Container(
-                            //   child: Row(
-                            //     mainAxisAlignment: MainAxisAlignment.start,
-                            //     children: [
-                            //       Checkbox(
-                            //           value: isChecked,
-                            //           splashRadius: 20,
-                            //           activeColor: const Color(0xFF004BB8),
-                            //           onChanged: (bool? value) {
-                            //             setState(() {
-                            //               // Color? Color(0xFF004BB8)
-                            //               isChecked = value ?? false;
-                            //             });
-                            //           }),
-                            //       SizedBox(
-                            //         width: screenWidth * 0.001,
-                            //       ),
-                            //       const CustomText(
-                            //         text: "Remember me",
-                            //         color: Color(0xFF828282),
-                            //         fontSize: 12,
-                            //         fontStyle: null,
-                            //         fontfamily: 'Poppins',
-                            //       ),
-                            //     ],
-                            //   ),
-                            // )
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 50.0),
+                                  child: CustomText(
+                                    text: "Date of Birth",
+                                    color: Color(0xFF3386FF),
+                                    fontSize: 12,
+                                    fontStyle: null,
+                                    fontfamily: 'Poppins',
+                                    // fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                // Spacer()/
+                                Padding(padding: EdgeInsets.all(4)),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () => _selectDate(context),
+                                      child: Container(
+                                        // height: screenHeight * .05,
+                                        width: screenWidth * 0.7,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 0, right: 0),
+                                          child: Center(
+                                              child: selectedDate == null
+                                                  ? Row(
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  right: 10),
+                                                          // child: Image.asset(
+                                                          //   'assets/calendar.png',
+                                                          //   scale: 4.5,
+                                                          //   // height: screenHeight * 0.032,
+                                                          // ),
+                                                        ),
+                                                        // Container(
+                                                        //   width:
+                                                        //       screenWidth * 0.58,
+                                                        //   decoration:
+                                                        //       const BoxDecoration(
+                                                        //     // borderRadius: BorderRadius.circular(10),
+                                                        //     // border: Border.(
+                                                        //     //   color: Color(0xff00194A),
+                                                        //     // ),
+                                                        //     border: Border(
+                                                        //       bottom: BorderSide(
+                                                        //           width: 1,
+                                                        //           color: Color
+                                                        //               .fromARGB(
+                                                        //                   224,
+                                                        //                   16,
+                                                        //                   15,
+                                                        //                   15)),
+                                                        //     ),
+                                                        //   ),
+                                                        //   child: Text(
+                                                        //     // '  Enter D.O.B',
+                                                        //     selectedDate != null
+                                                        //         ? DateFormat(
+                                                        //                 'dd-MM-yyyy')
+                                                        //             .format(
+                                                        //                 selectedDate!)
+                                                        //         : '  Enter D.O.B',
+                                                        //     style:
+                                                        //         const TextStyle(
+                                                        //       fontSize: 12,
+                                                        //       fontWeight:
+                                                        //           FontWeight.w400,
+                                                        //       color: Color(
+                                                        //           0xFF565656),
+                                                        //     ),
+                                                        //   ),
+                                                        // ),
+                                                      ],
+                                                    )
+                                                  : Row(
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  right: 15),
+                                                          // child: Image.asset(
+                                                          //   'assets/calendar.png',
+                                                          //   scale: 4.5,
+                                                          //   // height: screenHeight * 0.032,
+                                                          // ),
+                                                        ),
+                                                        Container(
+                                                          width: screenWidth *
+                                                              0.58,
+                                                          decoration:
+                                                              const BoxDecoration(
+                                                            // borderRadius: BorderRadius.circular(10),
+                                                            // border: Border.(
+                                                            //   color: Color(0xff00194A),
+                                                            // ),
+                                                            border: Border(
+                                                              bottom: BorderSide(
+                                                                  width: 1,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          224,
+                                                                          16,
+                                                                          15,
+                                                                          15)),
+                                                            ),
+                                                          ),
+                                                          child: Text(
+                                                            '${selectedDate!.toLocal()}'
+                                                                .split(' ')[0],
+                                                            style: const TextStyle(
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Checkbox(
+                                      value: isChecked,
+                                      splashRadius: 20,
+                                      activeColor: const Color(0xFF004BB8),
+                                      onChanged: (bool? value) {
+                                        setState(() {
+                                          // Color? Color(0xFF004BB8)
+                                          isChecked = value ?? false;
+                                        });
+                                      }),
+                                  SizedBox(
+                                    width: screenWidth * 0.001,
+                                  ),
+                                  const CustomText(
+                                    text: "Remember me",
+                                    color: Color(0xFF828282),
+                                    fontSize: 12,
+                                    fontStyle: null,
+                                    fontfamily: 'Poppins',
+                                  ),
+                                ],
+                              ),
+                            )
                           ]),
                         )),
                   ]),
@@ -609,8 +602,8 @@ class _LoginState extends State<Login> {
                     onPressed: () async {
                       // await _saveItem();
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => home()));
-          
+                          MaterialPageRoute(builder: (context) => Nav()));
+
                       // Add your onPressed logic here
                     },
                     style: ButtonStyle(

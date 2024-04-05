@@ -6,7 +6,7 @@ import 'package:bug_basher/views/screens/intro_screen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
 
@@ -38,13 +38,13 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
-  // Future getvalidationdata() async {
-  //   var obname = PreferencesManager().name;
-  //   setState(() {
-  //     finalname = obname;
-  //   });
-  //   print(finalname);
-  // }
+  Future getvalidationdata() async {
+    var obname = PreferencesManager().name;
+    setState(() {
+      finalname = obname;
+    });
+    print(finalname);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   height: 48,
                 ),
                 Text(
-                  '  Banking App',
+                  '  GraminFinance',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.inter(
                       color: Colors.black,

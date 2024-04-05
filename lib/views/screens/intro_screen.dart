@@ -20,6 +20,7 @@ class _Intro_ScreenState extends State<Intro_Screen> {
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         title: Center(
           child: Row(
@@ -31,7 +32,7 @@ class _Intro_ScreenState extends State<Intro_Screen> {
                 height: 36,
               ),
               Text(
-                '  Banking App',
+                '  GraminFinance',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.inter(
                     color: Colors.black,
@@ -121,7 +122,7 @@ class _Intro_ScreenState extends State<Intro_Screen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, 'auth_page');
+                          Navigator.pushNamed(context, 'login');
                         },
                         child: Container(
                           height: 50 * heightFactor(context),

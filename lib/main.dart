@@ -1,6 +1,10 @@
 // import 'dart:io';
+import 'package:bug_basher/views/screens/QR.dart';
+import 'package:bug_basher/views/screens/cards.dart';
 import 'package:bug_basher/views/screens/intro_screen.dart';
+import 'package:bug_basher/views/screens/loan.dart';
 import 'package:bug_basher/views/screens/profile.dart';
+import 'package:bug_basher/views/screens/progress.dart';
 import 'package:bug_basher/widgets/nav.dart';
 import 'dart:io';
 import 'package:bug_basher/views/screens/Login.dart';
@@ -10,12 +14,12 @@ import 'package:flutter/material.dart';
 import 'package:bug_basher/views/screens/splash_screen.dart';
 
 Future<void> main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
-  // // await PreferencesManager.init(); //
-  // HttpClient httpClient = new HttpClient()
-  //   ..badCertificateCallback =
-  //       ((X509Certificate cert, String host, int port) => true);
+  // await PreferencesManager.init(); //
+  HttpClient httpClient = new HttpClient()
+    ..badCertificateCallback =
+        ((X509Certificate cert, String host, int port) => true);
   runApp(const MyApp());
 }
 
@@ -26,70 +30,65 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: 'intro_screen',
-      // initialRoute: 'subject_wise_attendance',
+      initialRoute: 'cards',
       routes: {
-        'splashscreen': (context) => SplashScreen(),
-        'intro_screen': (context) => Intro_Screen(),
+        'splash': (context) => SplashScreen(),
+        'intro': (context) => Intro_Screen(),
         'nav': (context) => Nav(),
         'home': (context) => home(),
         'login': (context) => Login(),
-        // 'login': (context) => Login(),
-        // // 'overallattendance':(context)=>OverAllAttd(),
-        // 'timetable':(context) => ExamTimetableScreen(),
+        'loan': (context) => Loan(),
         'profile': (context) => Profile(),
-        // //  'profileinfo':(context) => profileInfo(),
-
-        // 'personalinfo':(context) => PersonalInfoScreen(),
-        // 'subject_wise_attendance':(context) => barGraph(userName: "user",userImage: "vgc",subjectDescription: "your attendance is good",subjectName: "mathematics",),
+        'progress': (context) => Progress(),
+        'cards': (context) => Cards(),
       },
     );
   }
 }
 
-// class PreferencesManager {
-//   static late PreferencesManager _instance;
-//   late SharedPreferences _prefs;
+class PreferencesManager {
+  static late PreferencesManager _instance;
+  late SharedPreferences _prefs;
 
-//   // private constructor
-//   PreferencesManager._();
+  // private constructor
+  PreferencesManager._();
 
-//   // factory method to access the singleton instance
-//   factory PreferencesManager() {
-//     return _instance;
-//   }
+  // factory method to access the singleton instance
+  factory PreferencesManager() {
+    return _instance;
+  }
 
-//   // initialize the singleton instance
-//   static Future<void> init() async {
-//     _instance = PreferencesManager._();
-//     _instance._prefs = await SharedPreferences.getInstance();
-//   }
+  // initialize the singleton instance
+  static Future<void> init() async {
+    _instance = PreferencesManager._();
+    _instance._prefs = await SharedPreferences.getInstance();
+  }
 
-//   // add methods for storing and retrieving data
-//   String get email => _prefs.getString('email') ?? '';
-//   set email(String value) => _prefs.setString('email', value);
+  // add methods for storing and retrieving data
+  String get email => _prefs.getString('email') ?? '';
+  set email(String value) => _prefs.setString('email', value);
 
-//   String get name => _prefs.getString('name') ?? '';
-//   set name(String value) => _prefs.setString('name', value);
-//   String get token => _prefs.getString('token') ?? '';
-//   set token(String value) => _prefs.setString('token', value);
-//   String get ack => _prefs.getString('ack') ?? '';
-//   set ack(String value) => _prefs.setString('ack', value);
-//   String get studentPhoto => _prefs.getString('studentPhoto') ?? '';
-//   set studentPhoto(String value) => _prefs.setString('studentPhoto', value);
-//   String get studentNumber => _prefs.getString('studentNumber') ?? '';
-//   set studentNumber(String value) => _prefs.setString('studentNumber', value);
-//   String get universityRollNumber =>
-//       _prefs.getString('universityRollNumber') ?? '';
-//   set universityRollNumber(String value) =>
-//       _prefs.setString('universityRollNumber', value);
-//   String get dob => _prefs.getString('dob') ?? '';
-//   set dob(String value) => _prefs.setString('dob', value);
-//   int get totalclasses => _prefs.getInt('totalclasses') ?? 0;
-//   set totalclasses(int value) => _prefs.setInt('totalclasses', value);
+  String get name => _prefs.getString('name') ?? '';
+  set name(String value) => _prefs.setString('name', value);
+  String get token => _prefs.getString('token') ?? '';
+  set token(String value) => _prefs.setString('token', value);
+  String get ack => _prefs.getString('ack') ?? '';
+  set ack(String value) => _prefs.setString('ack', value);
+  String get studentPhoto => _prefs.getString('studentPhoto') ?? '';
+  set studentPhoto(String value) => _prefs.setString('studentPhoto', value);
+  String get studentNumber => _prefs.getString('studentNumber') ?? '';
+  set studentNumber(String value) => _prefs.setString('studentNumber', value);
+  String get universityRollNumber =>
+      _prefs.getString('universityRollNumber') ?? '';
+  set universityRollNumber(String value) =>
+      _prefs.setString('universityRollNumber', value);
+  String get dob => _prefs.getString('dob') ?? '';
+  set dob(String value) => _prefs.setString('dob', value);
+  int get totalclasses => _prefs.getInt('totalclasses') ?? 0;
+  set totalclasses(int value) => _prefs.setInt('totalclasses', value);
 
-//   int get presentclasses => _prefs.getInt('presentclasses') ?? 0;
-//   set presentclasses(int value) => _prefs.setInt('presentclasses', value);
+  int get presentclasses => _prefs.getInt('presentclasses') ?? 0;
+  set presentclasses(int value) => _prefs.setInt('presentclasses', value);
 
-//   // add more methods as needed
-// }
+  // add more methods as needed
+}

@@ -12,7 +12,7 @@ class Nav extends StatefulWidget {
 
 class _Main_ScreenState extends State<Nav> {
   int _index = 0;
-  final screens = [const Home(), const Profile()];
+  final screens = [const home(), const Profile()];
   final navigationKey = GlobalKey<CurvedNavigationBarState>();
 
   @override
