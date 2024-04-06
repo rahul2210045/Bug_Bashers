@@ -1,12 +1,29 @@
+// import 'dart:io';
+import 'package:bug_basher/views/screens/QR.dart';
+import 'package:bug_basher/views/screens/cards.dart';
+import 'package:bug_basher/views/screens/intro_screen.dart';
+import 'package:bug_basher/views/screens/loan.dart';
+import 'package:bug_basher/views/screens/profile.dart';
+import 'package:bug_basher/views/screens/progress.dart';
+import 'package:bug_basher/widgets/nav.dart';
 import 'dart:io';
+
+import 'package:bug_basher/views/screens/Login.dart';
+import 'package:bug_basher/views/screens/chatbot.dart';
+import 'package:bug_basher/views/screens/features.dart';
+import 'package:bug_basher/views/screens/home.dart';
+import 'package:bug_basher/views/screens/lanhuage.dart';
+import 'package:bug_basher/views/screens/otp.dart';
+import 'package:bug_basher/views/screens/payment.dart';
+import 'package:bug_basher/views/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:bug_basher/views/screens/splash_screen.dart';
+import 'package:get/get.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await PreferencesManager.init(); //
+  // await PreferencesManager.init(); //
   HttpClient httpClient = new HttpClient()
     ..badCertificateCallback =
         ((X509Certificate cert, String host, int port) => true);
@@ -18,13 +35,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: 'splashscreen',
+      initialRoute: 'splash',
       // initialRoute: 'subject_wise_attendance',
       routes: {
-        'splashscreen': (context) => SplashScreen(),
-        // 'homepage': (context) => const Homepage(),
+        'splash': (context) => SplashScreen(),
+        'intro': (context) => Intro_Screen(),
+        'nav': (context) => Nav(),
+        'home': (context) => home(),
+        'login': (context) => Login(),
+        'home': (context) => const home(),
+         'payment': (context) => const Payment(),
+         'chatbot': (context) => cyberMitr(),
+          'otp': (context) => otpVerification(),
+           'features': (context) => Features(),
+           'language': (context) => Language2(),
+
         // 'login': (context) => Login(),
         // // 'overallattendance':(context)=>OverAllAttd(),
         // 'timetable':(context) => ExamTimetableScreen(),
@@ -66,21 +93,6 @@ class PreferencesManager {
   set token(String value) => _prefs.setString('token', value);
   String get ack => _prefs.getString('ack') ?? '';
   set ack(String value) => _prefs.setString('ack', value);
-  String get studentPhoto => _prefs.getString('studentPhoto') ?? '';
-  set studentPhoto(String value) => _prefs.setString('studentPhoto', value);
-  String get studentNumber => _prefs.getString('studentNumber') ?? '';
-  set studentNumber(String value) => _prefs.setString('studentNumber', value);
-  String get universityRollNumber =>
-      _prefs.getString('universityRollNumber') ?? '';
-  set universityRollNumber(String value) =>
-      _prefs.setString('universityRollNumber', value);
-  String get dob => _prefs.getString('dob') ?? '';
-  set dob(String value) => _prefs.setString('dob', value);
-  int get totalclasses => _prefs.getInt('totalclasses') ?? 0;
-  set totalclasses(int value) => _prefs.setInt('totalclasses', value);
-
-  int get presentclasses => _prefs.getInt('presentclasses') ?? 0;
-  set presentclasses(int value) => _prefs.setInt('presentclasses', value);
 
   // add more methods as needed
 }
