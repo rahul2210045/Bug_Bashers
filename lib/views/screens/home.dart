@@ -1,12 +1,16 @@
-
-
+import 'package:bug_basher/views/screens/payment.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 
 import 'package:bug_basher/main.dart';
+import 'package:bug_basher/views/screens/chatbot.dart';
+import 'package:bug_basher/views/screens/features.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pinput/pinput.dart';
-
 
 class home extends StatefulWidget {
   const home({super.key});
@@ -16,16 +20,62 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
-  TextEditingController search=TextEditingController();
-  TextEditingController _otpController=TextEditingController();
-    bool isChecked = false;
+  TextEditingController controller = TextEditingController();
+
+  FlutterTts flutterTts = FlutterTts();
+
+  double volume = 1.0;
+  double pitch = 1.0;
+  double speachRate = 0.5;
+  List<String>? languages;
+  // String langCode = "en-Us";
+  String langCode = "hi_IN";
+  @override
+  void initState() {
+    // init();
+    _speak();
+    super.initState();
+    init();
+    // _speak();
+  }
+
+  void init() async {
+    languages = List<String>.from(await flutterTts.getLanguages);
+    setState(() {});
+  }
+
+  void initSetting() async {
+    await flutterTts.setVolume(volume);
+    await flutterTts.setPitch(pitch);
+    await flutterTts.setSpeechRate(speachRate);
+    await flutterTts.setLanguage(langCode);
+  }
+
+  // speak() async {
+  //   await flutterTts.speak(value.text);
+  // }
+
+  void _speak() async {
+    initSetting();
+    await flutterTts.speak('for account information enter MPIN');
+  }
+
+  void _stop() async {
+    initSetting();
+    await flutterTts.speak(controller.text);
+  }
+
+  TextEditingController search = TextEditingController();
+
+  TextEditingController _otpController = TextEditingController();
+  bool isChecked = false;
   bool _isLoading = false;
 
   Future<void> saveotp() async {
     setState(() {
       _isLoading = true;
     });
-final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
+    final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
 
     final Map<String, String> requestBody = {
       'mpin': _otpController.text,
@@ -39,7 +89,6 @@ final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
         body: jsonEncode(requestBody),
       );
       // PreferencesManager().email=_usernameController as String;
-      
 
       //
       print(response.statusCode);
@@ -103,8 +152,8 @@ final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
           _isLoading = false;
         });
         // for navigaation to next page
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) =>home() ));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => home()));
         // Navigator.push(
         //     context,
         //     MaterialPageRoute(
@@ -142,7 +191,7 @@ final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
 
   @override
   Widget build(BuildContext context) {
-        final defaultPinTheme = PinTheme(
+    final defaultPinTheme = PinTheme(
         width: 60,
         height: 60,
         textStyle: TextStyle(fontSize: 22, color: Colors.black),
@@ -150,76 +199,76 @@ final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
             borderRadius: BorderRadius.circular(13),
             border: Border.all(color: Color(0xFFC2C3CB), width: 1.5)));
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        title: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/logos/Frame 13225.png',
+                width: 22,
+                height: 36,
+              ),
+              Text(
+                '  GraminFinance',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.inter(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600),
+              )
+            ],
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-                                  Padding(padding: EdgeInsets.all(10)),
-
+            Padding(padding: EdgeInsets.all(10)),
             Container(
               padding: EdgeInsets.all(10),
-              // width: 360,
-              // height: 216,
               decoration:
                   const BoxDecoration(color: Color.fromRGBO(255, 255, 255, 1)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                    Row(
-                    
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(padding: EdgeInsets.all(10)),
-                      Image.asset("assets/images/Frame 13225.png"),
-                      Padding(padding: EdgeInsets.only(right: 15)),
-                      Text("Banking App",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 20),)
-                    // CircleAvatar(backgroundImage: AssetImage("assets/images/Frame 13225.png"),),
-                                            // Padding(padding: EdgeInsets.all(10)),
-
-                      // Column(
-                      //   children: [
-                      //     Text(
-                      //       "HELLO USER",
-                      //       style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
-                      //     ),
-                      //       Text(
-                      //       "Vidhi Gupta",
-                      //       style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
-                      //     ),
-                      //   ],
-                      // ),
-                    //  Spacer(),
-                      // Icon(
-                      //   Icons.notifications,
-                      //   size: 20,
-                      // )
-                    ],
+                  SizedBox(
+                    height: 20,
                   ),
-                  SizedBox(height: 20,),
-                  const Row(
-                    
-                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  Row(
                     children: [
                       Padding(padding: EdgeInsets.all(10)),
-                       CircleAvatar(
+                      CircleAvatar(
                         backgroundColor: Colors.grey,
-                        backgroundImage: AssetImage("assets/images/Ellipse 1 (1).png"),
+                        backgroundImage:
+                            AssetImage("assets/images/Ellipse 1 (1).png"),
                         radius: 20,
                       ),
-                                            Padding(padding: EdgeInsets.all(10)),
-
+                      Padding(padding: EdgeInsets.all(10)),
                       Column(
                         children: [
                           Text(
                             "HELLO USER",
-                            style: TextStyle(color: Color.fromARGB(255, 0, 0, 0),fontSize: 10),
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                fontSize: 10),
                           ),
-                            Text(
-                            "Vidhi Gupta",
-                            style: TextStyle(color: Color.fromARGB(255, 0, 0, 0),fontSize: 10,fontWeight: FontWeight.w600),
+                          SizedBox(
+                            height: 6,
+                          ),
+                          Text(
+                            "Pranjal...",
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600),
                           ),
                         ],
                       ),
-                     Spacer(),
+                      Spacer(),
                       Icon(
                         Icons.notifications,
                         size: 20,
@@ -238,9 +287,14 @@ final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
                       style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         hintText: 'Pay by name or phone number',
-                        hintStyle:
-                            TextStyle(color: Color.fromRGBO(128, 128, 128, 1),fontSize: 12),
-                        prefixIcon: Icon(Icons.search, color: Colors.grey,size: 20,),
+                        hintStyle: TextStyle(
+                            color: Color.fromRGBO(128, 128, 128, 1),
+                            fontSize: 12),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Colors.grey,
+                          size: 20,
+                        ),
                         border: InputBorder.none,
                       ),
                     ),
@@ -248,154 +302,158 @@ final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
                 ],
               ),
             ),
-            // const SizedBox(
-            //   height: 30,
-            // ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //   children: [
-            //     // Image.asset(
-            //     //   "assests/images/icon1.jpeg",
-            //     //   width: 20,
-            //     // ),
-            //     Container(
-            //       width: 80,
-            //       height: 80,
-            //       color: const Color.fromRGBO(238, 246, 247, 1),
-            //       child: Image.asset("assests/images/icon1.jpeg"),
-            //       // child: Text("he"),
-            //     ),
-            //     Container(
-            //       width: 80,
-            //       height: 80,
-            //       color: const Color.fromRGBO(238, 246, 247, 1),
-            //       // child: Text("he"),
-            //       child: Image.asset("assests/images/icon2.jpeg"),
-            //     ),
-            //     Container(
-            //       width: 80,
-            //       height: 80,
-            //       color: const Color.fromRGBO(238, 246, 247, 1),
-            //       child: Image.asset("assests/images/icon3.jpeg"),
-            //       // child: Text("he"),
-            //     ),
-            //     Container(
-            //       width: 80,
-            //       height: 80,
-            //       color: const Color.fromRGBO(238, 246, 247, 1),
-            //       // child: Text("he"),
-            //       child: Image.asset("assests/images/icon4.jpeg"),
-            //     )
-            //   ],
-            // ),
             Container(
-              padding: const EdgeInsets.all(30),
-
-              height: 200,
+              padding: const EdgeInsets.all(20),
+// color: Colors.amber,
+              // height: 200,
               // width: 300,
               child: Image.asset('assets/images/image 26.png'),
             ),
-            const Row(
+            Row(
               // mainAxisAlignment: MainAxisAlignment.spaceAround,
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(padding: EdgeInsets.all(10)),
                 Text(
                   "Good Afternoon, ",
-                  style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 ),
+                SizedBox(
+                  width: 50,
+                ),
+
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => cyberMitr()));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(8),
+                    child: Image.asset(
+                      "assets/images/image 35 (1).png", // Replace with your image path
+                      width: 50,
+                      height: 50,
+                      // fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                // SizedBox(height: 20,),
                 // Text(
                 //   "SEE ALL",
                 //   style: TextStyle(color: Colors.blue),
                 // )
               ],
             ),
-                 const Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceAround,
-              // crossAxisAlignment: CrossAxisAlignment.center,
+            Row(
               children: [
                 Padding(padding: EdgeInsets.all(10)),
                 Text(
                   "VIDHI GUPTA...",
-                  style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                 ),
-                // Text(
-                //   "SEE ALL",
-                //   style: TextStyle(color: Colors.blue),
-                // )
               ],
             ),
-                        SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
 
-            const Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceAround,
-              // crossAxisAlignment: CrossAxisAlignment.center,
+            Row(
               children: [
                 Padding(padding: EdgeInsets.all(10)),
                 Text(
                   "Please enter 4 digit MPIN",
                   style: TextStyle(fontSize: 15),
                 ),
-                // Text(
-                //   "SEE ALL",
-                //   style: TextStyle(color: Colors.blue),
-                // )
               ],
             ),
-            SizedBox(height: 20,),
-             Pinput(
-          length: 4,
-          defaultPinTheme: defaultPinTheme,
-          focusedPinTheme: defaultPinTheme.copyWith(
-              decoration: defaultPinTheme.decoration!
-                  .copyWith(border: Border.all(color: Color(0xFFC2C3CB)))),
-          controller: _otpController,
-        ),
-                    SizedBox(height: 20,),
+
+            SizedBox(
+              height: 20,
+            ),
+            Pinput(
+              length: 4,
+              defaultPinTheme: defaultPinTheme,
+              focusedPinTheme: defaultPinTheme.copyWith(
+                  decoration: defaultPinTheme.decoration!
+                      .copyWith(border: Border.all(color: Color(0xFFC2C3CB)))),
+              controller: _otpController,
+            ),
+            SizedBox(
+              height: 20,
+            ),
 
             // adding mpin otp
-               const Row(
+            Row(
               // mainAxisAlignment: MainAxisAlignment.spaceAround,
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(padding: EdgeInsets.all(10)),
-                Text(
-                  "Trouble Signing In ?",
-                  style: TextStyle(fontSize: 15),
-                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Features()));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        const Color.fromRGBO(36, 107, 253, 1), // Text color
+                    padding: EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 24), // Padding
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(8)), // Border radius
+                    textStyle: TextStyle(fontSize: 15), // Text style
+                    elevation: 4, // Elevation
+                    // Add more properties as needed
+                  ),
+                  child: Text("Submit"),
+                )
+
+                // Textbutton(
+                //   chil
+                //   style: TextStyle(fontSize: 15),
+                // ),
                 // Text(
                 //   "SEE ALL",
                 //   style: TextStyle(color: Colors.blue),
                 // )
-              ],
-            ),
-                   Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceAround,
-              // crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(padding: EdgeInsets.all(10)),
-             Container(child: Image.asset("assets/images/Frame 48084 (1).png"))
               ],
             ),
             SizedBox(
-              height: 8,
+              height: 20,
             ),
-                        const Row(
+            Row(
               // mainAxisAlignment: MainAxisAlignment.spaceAround,
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(padding: EdgeInsets.all(10)),
-                Text(
-                  "Government schemes",
-                  style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600),
-                ),
-                // Text(
-                //   "SEE ALL",
-                //   style: TextStyle(color: Colors.blue),
-                // )
+                GestureDetector(
+                  child: Container(
+                      child: Image.asset("assets/images/Frame 48084 (1).png")),
+                  // onTap:  Navigator.push(context,
+                  //   MaterialPageRoute(builder: (context) => Payment()));
+                )
               ],
             ),
-            
+            SizedBox(
+              height: 100,
+            ),
+            //             const Row(
+            //   // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //   // crossAxisAlignment: CrossAxisAlignment.center,
+            //   children: [
+            //     Padding(padding: EdgeInsets.all(10)),
+            //     Text(
+            //       "Government schemes",
+            //       style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600),
+            //     ),
+            //     // Text(
+            //     //   "SEE ALL",
+            //     //   style: TextStyle(color: Colors.blue),
+            //     // )
+            //   ],
+            // ),
+
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             //   children: [
@@ -478,62 +536,6 @@ final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: Colors.grey,
-              ),
-              label: "HOME",
-              backgroundColor: Color.fromRGBO(255, 255, 255, 1),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.medical_information_outlined),
-              label: "G",
-              // backgroundColor: Colors.white
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.health_and_safety,
-                  color: Colors.grey,
-                ),
-                label: "H",
-                backgroundColor: Colors.white),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.interests,
-                  color: Colors.grey,
-                ),
-                label: "L",
-                backgroundColor: Colors.white),
-          ],
-          selectedItemColor: Colors.grey,
-          unselectedItemColor: Colors.grey,
-          selectedLabelStyle: const TextStyle(
-            color: Colors.grey,
-          ),
-          unselectedLabelStyle: const TextStyle(
-            color: Colors.grey,
-          ),
-          onTap: (index) {
-            switch (index) {
-              case 0:
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => home()));
-                break;
-              case 1:
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => Doctors()));
-                break;
-              case 2:
-                break;
-              case 3:
-                break;
-              default:
-                break;
-            }
-          }),
     );
   }
 }

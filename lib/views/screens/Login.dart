@@ -1,21 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-// import 'package:edumarshals/Screens/OverAllAttendance.dart';
-// import 'package:edumarshals/Screens/Attendance/OverAllAttendance.dart';
-// import 'package:edumarshals/Screens/Attendance/OverAllAttendance.dart';
-// import 'package:edumarshals/Screens/HomePage/Homepage.dart';
-// import 'package:edumarshals/Screens/User_Info/Personal_Info/Contact_info_Data.dart';
-// import 'package:edumarshals/Screens/User_Info/Personal_Info/Parent_Info_Data.dart';
-// import 'package:edumarshals/Screens/User_Info/Personal_Info/Personal_Info_Data.dart';
-// import 'package:edumarshals/Screens/User_Info/Subject_Data.dart';
-// import 'package:edumarshals/main.dart';
-// import 'package:edumarshals/screens/time_table.dart';
 import 'package:bug_basher/main.dart';
 import 'package:bug_basher/utils/constants/utilities.dart';
 import 'package:bug_basher/views/screens/home.dart';
+import 'package:bug_basher/widgets/nav.dart';
 import 'package:flutter/material.dart';
-// import 'package:edumarshals/Utils/Utilities/utilities2.dart';
 import 'package:http/http.dart' as http;
 // import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,15 +26,13 @@ class _LoginState extends State<Login> {
   // final TextEditingController _dobController = TextEditingController();
   bool isChecked = false;
   bool _isLoading = false;
-  // DateTime? selectedDate;
-
- 
+  DateTime? selectedDate;
 
   Future<void> _saveItem() async {
     setState(() {
       _isLoading = true;
     });
-final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
+    final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
 
     final Map<String, String> requestBody = {
       'password': _passController.text,
@@ -57,8 +45,7 @@ final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
         headers: <String, String>{'Content-Type': 'application/json'},
         body: jsonEncode(requestBody),
       );
-      PreferencesManager().email=_usernameController as String;
-      
+      PreferencesManager().email = _usernameController as String;
 
       //
       print(response.statusCode);
@@ -122,8 +109,8 @@ final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
           _isLoading = false;
         });
         // for navigaation to next page
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) =>home() ));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => home()));
         // Navigator.push(
         //     context,
         //     MaterialPageRoute(
@@ -302,84 +289,87 @@ final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
                             SizedBox(
                               height: screenHeight * 0.02,
                             ),
-                          Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      // SizedBox(width: 900),
-      Padding(
-        padding: const EdgeInsets.only(left: 50.0),
-        child: CustomText(
-          text: "Password",
-          color: const Color(0xFF3386FF),
-          fontSize: 12,
-          fontStyle: null,
-          fontfamily: 'Poppins',
-          // fontWeight: FontWeight.w400,
-        ),
-      ),
-      Container(
-          decoration: const BoxDecoration(
-              // color: Color(0xFFA0A0A0),
-              border: Border(
-                  // bottom: BorderSide(width: 1, color: Color(0xFFA0A0A0)),
-                  )
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // SizedBox(width: 900),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 50.0),
+                                  child: CustomText(
+                                    text: "Password",
+                                    color: const Color(0xFF3386FF),
+                                    fontSize: 12,
+                                    fontStyle: null,
+                                    fontfamily: 'Poppins',
+                                    // fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                Container(
+                                    decoration: const BoxDecoration(
+                                        // color: Color(0xFFA0A0A0),
+                                        border: Border(
+                                            // bottom: BorderSide(width: 1, color: Color(0xFFA0A0A0)),
+                                            )
 
-              // boxShadow: [
-              //   BoxShadow(
-              //       // color: Color.fromARGB(62, 254, 254, 254).withOpacity(0.2),
-              //       // spreadRadius: 2,
-              //       // blurRadius: 5,
-              //       // offset: const Offset(0, 3),
-              //       ),
-              // ],
-              ),
-          // margin: const EdgeInsets.all(8.0),
-          child: SizedBox(
-            // width: screenWidth * 1,
-            child: Row(children: [
-              Image.asset(
-                "assets/images/shield-security.png",
-                scale: 1,
-                height: screenHeight * 0.032,
-              ),
-              SizedBox(width: screenWidth * 0.01),
-              SizedBox(
-                width: screenWidth * 0.6,
-                child: TextFormField(
-                  controller: _passController,
-                  obscureText: true,
-                  style: const TextStyle(color: Colors.black),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a valid value';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    fillColor: const Color.fromARGB(0, 17, 90, 216),
-                    filled: true,
-                    hintText: "Password",
-                    hintStyle: const TextStyle(
-                        color: Color(0xFF565656),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400),
-                    // border:
-                    // focusedBorder: OutlineInputBorder(
-                    //   borderRadius: BorderRadius.circular(10),
-                    //   borderSide: BorderSide(color: Color(0xFFA0A0A0)),
-                    // ),
-                    // enabledBorder: OutlineInputBorder(
-                    //   borderRadius: BorderRadius.circular(2),
-                    //   borderSide: BorderSide.none,
-                    // ),
-                    // suffixStyle: const TextStyle(color: Colors.indigo),
-                  ),
-                ),
-              ),
-            ]),
-          ))
-    ],
-  ),
+                                        // boxShadow: [
+                                        //   BoxShadow(
+                                        //       // color: Color.fromARGB(62, 254, 254, 254).withOpacity(0.2),
+                                        //       // spreadRadius: 2,
+                                        //       // blurRadius: 5,
+                                        //       // offset: const Offset(0, 3),
+                                        //       ),
+                                        // ],
+                                        ),
+                                    // margin: const EdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                      // width: screenWidth * 1,
+                                      child: Row(children: [
+                                        Image.asset(
+                                          "assets/images/shield-security.png",
+                                          scale: 1,
+                                          height: screenHeight * 0.032,
+                                        ),
+                                        SizedBox(width: screenWidth * 0.01),
+                                        SizedBox(
+                                          width: screenWidth * 0.6,
+                                          child: TextFormField(
+                                            controller: _passController,
+                                            obscureText: true,
+                                            style: const TextStyle(
+                                                color: Colors.black),
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Please enter a valid value';
+                                              }
+                                              return null;
+                                            },
+                                            decoration: InputDecoration(
+                                              fillColor: const Color.fromARGB(
+                                                  0, 17, 90, 216),
+                                              filled: true,
+                                              hintText: "Password",
+                                              hintStyle: const TextStyle(
+                                                  color: Color(0xFF565656),
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400),
+                                              // border:
+                                              // focusedBorder: OutlineInputBorder(
+                                              //   borderRadius: BorderRadius.circular(10),
+                                              //   borderSide: BorderSide(color: Color(0xFFA0A0A0)),
+                                              // ),
+                                              // enabledBorder: OutlineInputBorder(
+                                              //   borderRadius: BorderRadius.circular(2),
+                                              //   borderSide: BorderSide.none,
+                                              // ),
+                                              // suffixStyle: const TextStyle(color: Colors.indigo),
+                                            ),
+                                          ),
+                                        ),
+                                      ]),
+                                    ))
+                              ],
+                            ),
                             SizedBox(
                               height: screenHeight * 0.02,
                             ),
@@ -404,7 +394,7 @@ final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
                             //           MainAxisAlignment.spaceBetween,
                             //       children: [
                             //         GestureDetector(
-                            //           onTap: () => _selectDate(context),
+                            //           onTap: () => _selectDate(),
                             //           child: Container(
                             //             // height: screenHeight * .05,
                             //             width: screenWidth * 0.7,
@@ -480,8 +470,8 @@ final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
                             //                               // ),
                             //                             ),
                             //                             Container(
-                            //                               width:
-                            //                                   screenWidth * 0.58,
+                            //                               width: screenWidth *
+                            //                                   0.58,
                             //                               decoration:
                             //                                   const BoxDecoration(
                             //                                 // borderRadius: BorderRadius.circular(10),
@@ -518,33 +508,33 @@ final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
                             //     ),
                             //   ],
                             // ),
-                            // Container(
-                            //   child: Row(
-                            //     mainAxisAlignment: MainAxisAlignment.start,
-                            //     children: [
-                            //       Checkbox(
-                            //           value: isChecked,
-                            //           splashRadius: 20,
-                            //           activeColor: const Color(0xFF004BB8),
-                            //           onChanged: (bool? value) {
-                            //             setState(() {
-                            //               // Color? Color(0xFF004BB8)
-                            //               isChecked = value ?? false;
-                            //             });
-                            //           }),
-                            //       SizedBox(
-                            //         width: screenWidth * 0.001,
-                            //       ),
-                            //       const CustomText(
-                            //         text: "Remember me",
-                            //         color: Color(0xFF828282),
-                            //         fontSize: 12,
-                            //         fontStyle: null,
-                            //         fontfamily: 'Poppins',
-                            //       ),
-                            //     ],
-                            //   ),
-                            // )
+                            Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Checkbox(
+                                      value: isChecked,
+                                      splashRadius: 20,
+                                      activeColor: const Color(0xFF004BB8),
+                                      onChanged: (bool? value) {
+                                        setState(() {
+                                          // Color? Color(0xFF004BB8)
+                                          isChecked = value ?? false;
+                                        });
+                                      }),
+                                  SizedBox(
+                                    width: screenWidth * 0.001,
+                                  ),
+                                  const CustomText(
+                                    text: "Remember me",
+                                    color: Color(0xFF828282),
+                                    fontSize: 12,
+                                    fontStyle: null,
+                                    fontfamily: 'Poppins',
+                                  ),
+                                ],
+                              ),
+                            )
                           ]),
                         )),
                   ]),
@@ -576,10 +566,10 @@ final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
                   SizedBox(height: screenHeight * 0.3),
                   ElevatedButton(
                     onPressed: () async {
-                      await _saveItem();
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) => home()));
-          
+                      // await _saveItem();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Nav()));
+
                       // Add your onPressed logic here
                     },
                     style: ButtonStyle(
@@ -642,3 +632,5 @@ final url = Uri.https('banking-management.onrender.com', '/v1/user/login');
     );
   }
 }
+
+class _selectDate {}

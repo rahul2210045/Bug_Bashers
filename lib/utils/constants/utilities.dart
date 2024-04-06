@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class CustomText extends StatelessWidget {
@@ -39,7 +38,7 @@ class CustomText extends StatelessWidget {
   }
 }
 
-Widget buildtextfiled( String image,String text, BuildContext context,
+Widget buildtextfiled(String image, String text, BuildContext context,
     String hinttext, bool obscure, controller) {
   final screenHeight = MediaQuery.of(context).size.height;
   final screenWidth = MediaQuery.of(context).size.width;

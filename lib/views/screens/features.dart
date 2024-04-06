@@ -9,7 +9,6 @@ class Features extends StatefulWidget {
 }
 
 class _FeaturesState extends State<Features> {
-  
   // start the voice code.......................
   TextEditingController controller = TextEditingController();
 
@@ -48,7 +47,8 @@ class _FeaturesState extends State<Features> {
 
   void _speak() async {
     initSetting();
-    await flutterTts.speak('प्रांजल पीपीटी सूंदर से बना दे भाई');
+    await flutterTts.speak(
+        'press 1   Accounts Information, press 2   Deposits ,press 3   Loans ,press 4   Insurance');
   }
 
   void _stop() async {
@@ -61,7 +61,7 @@ class _FeaturesState extends State<Features> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: const Color.fromRGBO(17, 111, 232, 1),
       ),
       body: Container(
         height: 500,
@@ -165,7 +165,9 @@ class _FeaturesState extends State<Features> {
         children: [
           Padding(padding: EdgeInsets.only(left: 3, right: 3)),
           Text(number, style: TextStyle(color: Colors.white)),
+          Padding(padding: EdgeInsets.only(left: 10, right: 10)),
           Image.asset(imagePath),
+          Padding(padding: EdgeInsets.only(left: 10, right: 10)),
           Text(title, style: TextStyle(color: Colors.white)),
         ],
       ),
