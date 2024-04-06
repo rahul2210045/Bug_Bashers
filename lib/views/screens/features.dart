@@ -1,169 +1,5 @@
-// // import 'package:flutter/material.dart';
-
-// // class Features extends StatefulWidget {
-// //   const Features({super.key});
-
-// //   @override
-// //   State<Features> createState() => _FeaturesState();
-// // }
-
-// // class _FeaturesState extends State<Features> {
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     return Scaffold(
-// //       // backgroundColor: Colors.blue,
-// //       appBar: AppBar(
-// //          backgroundColor: Colors.blue,
-// //       ),
-// //       body: Container(
-// //         height: 500,
-// //         decoration: BoxDecoration(
-// //           color: Colors.blue,
-// //           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20))
-          
-// //         ),
-// //         child: Padding(
-// //           padding: EdgeInsets.all(10),
-// //           child: Column(
-// //             mainAxisAlignment: MainAxisAlignment.start,
-// //             children: [
-              
-// //                 Row(
-// //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-// //                   children: [
-// //                     Text("1.",style: TextStyle(color: Colors.white)),
-// //                     Image.asset("assets/images/Credit-Card-3--Streamline-Plump.png"),
-// //                     Text("Accounts Information",style: TextStyle(color: Colors.white),)
-// //                   ],
-// //                 ),
-// //                    Row(
-// //                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-// //                   children: [
-// //                     Text("2 .",style: TextStyle(color: Colors.white)),
-// //                     Image.asset("assets/images/File-Dollar--Streamline-Plump.png"),
-// //                     Text("Deposits",style: TextStyle(color: Colors.white),)
-// //                   ],
-// //                 ),
-// //                    Row(
-// //                   children: [
-// //                     Text("3.",style: TextStyle(color: Colors.white)),
-// //                     // Image.asset(""),
-// //                     Text("Loans",style: TextStyle(color: Colors.white),)
-// //                   ],
-// //                 ),
-// //                    Row(
-// //                   children: [
-// //                     Text("4.",style: TextStyle(color: Colors.white)),
-// //                     // Image.asset(""),
-// //                     Text("Insurance",style: TextStyle(color: Colors.white),)
-// //                   ],
-// //                 )
-// //             ],
-// //           ),
-// //         ),
-// //       ),
-// //     );
-// //   }
-// // }
-
-// import 'package:flutter/material.dart';
-
-// class Features extends StatefulWidget {
-//   const Features({super. key}) ;
-
-//   @override
-//   State<Features> createState() => _FeaturesState();
-// }
-
-// class _FeaturesState extends State<Features> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: Colors.blue,
-//       ),
-//       body: Container(
-//         decoration: BoxDecoration(
-//           color: Colors.blue,
-//           borderRadius: BorderRadius.only(
-//             bottomLeft: Radius.circular(20),
-//             bottomRight: Radius.circular(20),
-//           ),
-//         ),
-//         child: ListView.builder(
-//           itemCount: 4, // Number of features
-//           itemBuilder: (BuildContext context, int index) {
-//             return ListTile(
-//               leading: Text((index + 1).toString(), style: TextStyle(color: Colors.white)),
-//               title: Text(
-//                 _getTitle(index),
-//                 style: TextStyle(color: Colors.white),
-//               ),
-//               trailing: _buildButtonForIndex(context,index),
-//             );
-//           },
-//         ),
-//       ),
-//     );
-//   }
-
-//   String _getTitle(int index) {
-//     switch (index) {
-//       case 0:
-//         return "Accounts Information";
-//       case 1:
-//         return "Deposits";
-//       case 2:
-//         return "Loans";
-//       case 3:
-//         return "Insurance";
-//       default:
-//         return "";
-//     }
-//   }
-// Widget _buildButtonForIndex(BuildContext context, int index) {
-//     // You can define your button based on the index
-//     // For now, let's just return a simple button for "Accounts Information"
-//     if (index == 0) {
-//       return GestureDetector(
-//         onTap: () {
-//           Navigator.push(
-//             context,
-//             MaterialPageRoute(builder: (context) => AccountInformationPage()),
-//           );
-//         },
-//         child: Image.asset(
-//           "assets/images/your_image.png", // Replace with your image path
-//           width: 24, // Adjust width as needed
-//           height: 24, // Adjust height as needed
-//           color: Colors.white, // Optional: change color of the image
-//         ),
-//       );
-//     } else {
-//       return SizedBox.shrink(); // Return an empty container for other items
-//     }
-//   }
-
-// }
-
-// class AccountInformationPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Account Information'),
-//       ),
-//       body: Center(
-//         child: Text('This is the Account Information page'),
-//       ),
-//     );
-//   }
-// }
-
-
-
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class Features extends StatefulWidget {
   const Features({super.key});
@@ -173,6 +9,54 @@ class Features extends StatefulWidget {
 }
 
 class _FeaturesState extends State<Features> {
+  
+  // start the voice code.......................
+  TextEditingController controller = TextEditingController();
+
+  FlutterTts flutterTts = FlutterTts();
+
+  double volume = 1.0;
+  double pitch = 1.0;
+  double speachRate = 0.5;
+  List<String>? languages;
+  // String langCode = "en-Us";
+  String langCode = "hi_IN";
+  @override
+  void initState() {
+    // init();
+    _speak();
+    super.initState();
+    init();
+    // _speak();
+  }
+
+  void init() async {
+    languages = List<String>.from(await flutterTts.getLanguages);
+    setState(() {});
+  }
+
+  void initSetting() async {
+    await flutterTts.setVolume(volume);
+    await flutterTts.setPitch(pitch);
+    await flutterTts.setSpeechRate(speachRate);
+    await flutterTts.setLanguage(langCode);
+  }
+
+  // speak() async {
+  //   await flutterTts.speak(value.text);
+  // }
+
+  void _speak() async {
+    initSetting();
+    await flutterTts.speak('प्रांजल पीपीटी सूंदर से बना दे भाई');
+  }
+
+  void _stop() async {
+    initSetting();
+    await flutterTts.speak(controller.text);
+  }
+
+// ennd of screen code.......................................................
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -208,25 +92,29 @@ class _FeaturesState extends State<Features> {
               buildFeatureRow(
                 index: 2,
                 number: "3.",
-                imagePath: "assets/images/share-coin-dollar--payment-cash-money-finance-receive-give-coin-hand.png", // Replace with your image path
+                imagePath:
+                    "assets/images/share-coin-dollar--payment-cash-money-finance-receive-give-coin-hand.png", // Replace with your image path
                 title: "Loans",
               ),
               buildFeatureRow(
                 index: 3,
                 number: "4.",
-                imagePath: "assets/images/Piggy-Bank--Streamline-Plump.png", // Replace with your image path
+                imagePath:
+                    "assets/images/Piggy-Bank--Streamline-Plump.png", // Replace with your image path
                 title: "Insurance",
               ),
-               buildFeatureRow(
+              buildFeatureRow(
                 index: 4,
                 number: "5.",
-                imagePath: "assets/images/Group.png", // Replace with your image path
+                imagePath:
+                    "assets/images/Group.png", // Replace with your image path
                 title: "Card",
               ),
-               buildFeatureRow(
+              buildFeatureRow(
                 index: 5,
                 number: "6.",
-                imagePath: "assets/images/shopping-cart-1--shopping-cart-checkout.png", // Replace with your image path
+                imagePath:
+                    "assets/images/shopping-cart-1--shopping-cart-checkout.png", // Replace with your image path
                 title: "Shop & Order",
               ),
             ],
@@ -236,7 +124,11 @@ class _FeaturesState extends State<Features> {
     );
   }
 
-  Widget buildFeatureRow({required int index, required String number, required String imagePath, required String title}) {
+  Widget buildFeatureRow(
+      {required int index,
+      required String number,
+      required String imagePath,
+      required String title}) {
     return GestureDetector(
       onTap: () {
         // Navigate to the respective page based on the index
@@ -244,7 +136,8 @@ class _FeaturesState extends State<Features> {
           case 0:
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AccountsInformationPage()),
+              MaterialPageRoute(
+                  builder: (context) => AccountsInformationPage()),
             );
             break;
           case 1:
@@ -270,7 +163,7 @@ class _FeaturesState extends State<Features> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Padding(padding: EdgeInsets.only(left: 3,right: 3)),
+          Padding(padding: EdgeInsets.only(left: 3, right: 3)),
           Text(number, style: TextStyle(color: Colors.white)),
           Image.asset(imagePath),
           Text(title, style: TextStyle(color: Colors.white)),

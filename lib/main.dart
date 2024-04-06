@@ -4,11 +4,13 @@ import 'package:bug_basher/views/screens/Login.dart';
 import 'package:bug_basher/views/screens/chatbot.dart';
 import 'package:bug_basher/views/screens/features.dart';
 import 'package:bug_basher/views/screens/home.dart';
+import 'package:bug_basher/views/screens/lanhuage.dart';
 import 'package:bug_basher/views/screens/otp.dart';
 import 'package:bug_basher/views/screens/payment.dart';
 import 'package:bug_basher/views/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,9 +27,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: 'features',
+      initialRoute: 'language',
       // initialRoute: 'subject_wise_attendance',
       routes: {
         'splashscreen': (context) => SplashScreen(),
@@ -37,6 +39,7 @@ class MyApp extends StatelessWidget {
          'chatbot': (context) => cyberMitr(),
           'otp': (context) => otpVerification(),
            'features': (context) => Features(),
+           'language': (context) => Language2(),
 
         // 'login': (context) => Login(),
         // // 'overallattendance':(context)=>OverAllAttd(),
