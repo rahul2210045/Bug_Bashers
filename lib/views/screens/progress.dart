@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Progress extends StatelessWidget {
-  const Progress({super.key});
+class Progress1 extends StatelessWidget {
+  const Progress1({super.key});
 
   @override
   Widget build(BuildContext context) {

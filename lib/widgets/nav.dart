@@ -1,5 +1,6 @@
 import 'package:bug_basher/views/screens/Home.dart';
 import 'package:bug_basher/views/screens/cards.dart';
+import 'package:bug_basher/views/screens/education.dart';
 import 'package:bug_basher/views/screens/features.dart';
 import 'package:bug_basher/views/screens/profile.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class Nav extends StatefulWidget {
 
 class _Main_ScreenState extends State<Nav> {
   int _index = 0;
-  final screens = [const home(), Cards(), Features(), const Profile()];
+  final screens = [const home(), Cards(), Financial_Education(), const profile()];
   final navigationKey = GlobalKey<CurvedNavigationBarState>();
 
   @override
@@ -26,12 +27,12 @@ class _Main_ScreenState extends State<Nav> {
         color: Color.fromARGB(255, 36, 107, 253),
       ),
       const Icon(
-        Icons.card_membership,
+        Icons.wallet,
         size: 24,
         color: Color.fromARGB(255, 36, 107, 253),
       ),
       const Icon(
-        Icons.featured_play_list,
+        Icons.book_online_rounded,
         size: 24,
         color: Color.fromARGB(255, 36, 107, 253),
       ),
